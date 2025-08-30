@@ -1,0 +1,222 @@
+{
+  "general": {
+    "output_dir": "reports",
+    "log_level": "INFO",
+    "timeout": 300,
+    "user_agent": "SniperSayer/1.0 (Security Scanner)",
+    "max_threads": 10
+  },
+  "modes": {
+    "stealth": {
+      "description": "Minimal footprint scanning",
+      "reconnaissance": {
+        "enabled": true,
+        "whois": true,
+        "dns": true,
+        "ping": false,
+        "subdomain_enum": false,
+        "ssl_check": false
+      },
+      "port_scan": {
+        "enabled": true,
+        "scan_type": "top-ports",
+        "top_ports": 100,
+        "service_detection": false,
+        "os_detection": false,
+        "stealth_mode": true,
+        "timing": "T2"
+      },
+      "vulnerability_scan": {
+        "enabled": true,
+        "nikto": {
+          "enabled": false,
+          "plugins": [
+            "@DEFAULT"
+          ],
+          "max_time": 60
+        },
+        "wpscan": {
+          "enabled": false,
+          "enumerate": "vp",
+          "stealthy": true
+        },
+        "custom_checks": {
+          "enabled": true,
+          "robots_txt": true,
+          "security_headers": true,
+          "admin_panels": false,
+          "backup_files": false
+        }
+      }
+    },
+    "report": {
+      "description": "Balanced scanning for reporting",
+      "reconnaissance": {
+        "enabled": true,
+        "whois": true,
+        "dns": true,
+        "ping": true,
+        "subdomain_enum": true,
+        "ssl_check": true
+      },
+      "port_scan": {
+        "enabled": true,
+        "scan_type": "tcp",
+        "top_ports": 1000,
+        "service_detection": true,
+        "os_detection": true,
+        "stealth_mode": false,
+        "timing": "T3"
+      },
+      "vulnerability_scan": {
+        "enabled": true,
+        "nikto": {
+          "enabled": true,
+          "plugins": [
+            "@DEFAULT"
+          ],
+          "max_time": 300
+        },
+        "wpscan": {
+          "enabled": true,
+          "enumerate": "vp",
+          "stealthy": false
+        },
+        "custom_checks": {
+          "enabled": true,
+          "robots_txt": true,
+          "security_headers": true,
+          "admin_panels": true,
+          "backup_files": true
+        }
+      }
+    },
+    "full": {
+      "description": "Comprehensive scanning",
+      "reconnaissance": {
+        "enabled": true,
+        "whois": true,
+        "dns": true,
+        "ping": true,
+        "subdomain_enum": true,
+        "ssl_check": true,
+        "subdomain_wordlist": "subdomains.txt"
+      },
+      "port_scan": {
+        "enabled": true,
+        "scan_type": "tcp",
+        "ports": "1-65535",
+        "service_detection": true,
+        "os_detection": true,
+        "script_scan": true,
+        "stealth_mode": false,
+        "timing": "T4"
+      },
+      "vulnerability_scan": {
+        "enabled": true,
+        "nikto": {
+          "enabled": true,
+          "plugins": [
+            "@ALL"
+          ],
+          "max_time": 1800
+        },
+        "wpscan": {
+          "enabled": true,
+          "enumerate": "vp,vt,tt,cb,dbe,u,m",
+          "stealthy": false,
+          "password_attack": true
+        },
+        "custom_checks": {
+          "enabled": true,
+          "robots_txt": true,
+          "security_headers": true,
+          "admin_panels": true,
+          "backup_files": true,
+          "directory_bruteforce": true
+        }
+      }
+    },
+    "quick": {
+      "description": "Fast preliminary scan",
+      "reconnaissance": {
+        "enabled": true,
+        "whois": false,
+        "dns": true,
+        "ping": true,
+        "subdomain_enum": false,
+        "ssl_check": true
+      },
+      "port_scan": {
+        "enabled": true,
+        "scan_type": "top-ports",
+        "top_ports": 50,
+        "service_detection": false,
+        "os_detection": false,
+        "timing": "T5"
+      },
+      "vulnerability_scan": {
+        "enabled": true,
+        "nikto": {
+          "enabled": false,
+          "max_time": 30
+        },
+        "wpscan": {
+          "enabled": false,
+          "stealthy": true
+        },
+        "custom_checks": {
+          "enabled": true,
+          "robots_txt": true,
+          "security_headers": true,
+          "admin_panels": false,
+          "backup_files": false
+        }
+      }
+    }
+  },
+  "tools": {
+    "nmap": {
+      "path": "nmap",
+      "args": [
+        "-sV",
+        "-O",
+        "--script=default"
+      ]
+    },
+    "nikto": {
+      "path": "nikto",
+      "args": [
+        "-Format",
+        "json"
+      ]
+    },
+    "wpscan": {
+      "path": "wpscan",
+      "args": [
+        "--format",
+        "json"
+      ]
+    },
+    "whois": {
+      "path": "whois"
+    },
+    "dig": {
+      "path": "dig"
+    }
+  },
+  "wordlists": {
+    "subdomains": "wordlists/subdomains.txt",
+    "directories": "wordlists/directories.txt",
+    "passwords": "wordlists/passwords.txt"
+  },
+  "output": {
+    "formats": [
+      "json",
+      "html",
+      "csv"
+    ],
+    "include_raw_data": false,
+    "compress_reports": true
+  }
+}
